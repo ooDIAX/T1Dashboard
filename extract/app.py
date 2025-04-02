@@ -59,6 +59,7 @@ def upload_to_gcs(data, destination_blob_name):
 
 @app.route("/fetch-stats", methods=["GET"])
 def fetch_stats():
+    return jsonify({"test": "works"}), 200
     try:
         all_player_data = {}
         for player in PLAYERS:
