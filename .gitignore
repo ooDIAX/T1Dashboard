@@ -8,6 +8,9 @@ t1venv/
 env/
 ENV/
 
+#test
+extract/test.py
+
 # Distribution / packaging
 .Python
 build/

@@ -17,7 +17,7 @@ PLAYERS = [
     "Oner#KR1",   # Mun "Oner" Hyeon-jun
     "Faker#KR1",  # Lee "Faker" Sang-hyeok
     "Gumayusi#KR1",  # Lee "Gumayusi" Min-hyeong
-    "Keria#KR1"   # Ryu "Keria" Min-seok
+    # "Keria#KR1"   # Ryu "Keria" Min-seok
 ]
 
 # Initialize GCS client
