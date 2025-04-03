@@ -16,17 +16,17 @@ player_to_puuid = {
 }
 
 # Configuration
-RIOT_API_KEY = "RGAPI-9839e078-e41b-4548-8726-188eb40ca4ae"  # Replace with your Riot API key
-GCS_BUCKET_NAME = "t1dashboard"  # Replace with your GCS bucket name
-REGION = "asia"  # Riot API region (adjust if targeting KR server)
+RIOT_API_KEY = "RGAPI-2be3048f-a7ce-465b-b56f-caa14b4e2586"
+GCS_BUCKET_NAME = "t1dashboard"
+REGION = "asia"
 
 # T1's active 2025 roster with Riot IDs (gameName#tagLine)
 PLAYERS = [
-    # "어리고싶다#KR1",  # Choi "Doran" Hyeon-joon
+    "어리고싶다#KR1",  # Choi "Doran" Hyeon-joon
     "T1 Oner#T1GO",   # Mun "Oner" Hyeon-jun
     "Hide on bush#KR1",  # Lee "Faker" Sang-hyeok
     "T1 Gumayusi#KR1",  # Lee "Gumayusi" Min-hyeong
-    # "역천괴#Ker10"   # Ryu "Keria" Min-seok
+    "역천괴#Ker10"   # Ryu "Keria" Min-seok
 ]
 
 # Initialize GCS client
@@ -42,7 +42,7 @@ def get_puuid(riot_id):
     else:
         raise Exception(f"Failed to get PUUID for {riot_id}: {response.status_code}")
 
-def get_last_matches(puuid, count=5):
+def get_last_matches(puuid, count=10):
     url = f"https://{REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?count={count}"
     headers = {"X-Riot-Token": RIOT_API_KEY}
     response = requests.get(url, headers=headers)
