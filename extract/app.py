@@ -14,10 +14,10 @@ REGION = "asia"  # Riot API region (adjust if targeting KR server)
 # T1's active 2025 roster with Riot IDs (gameName#tagLine)
 PLAYERS = [
     "Doran#KR1",  # Choi "Doran" Hyeon-joon
-    "Oner#KR1",   # Mun "Oner" Hyeon-jun
-    "Faker#KR1",  # Lee "Faker" Sang-hyeok
-    "Gumayusi#KR1",  # Lee "Gumayusi" Min-hyeong
-    # "Keria#KR1"   # Ryu "Keria" Min-seok
+    "T1 Oner#T1GO",   # Mun "Oner" Hyeon-jun
+    "Hide on bush#KR1",  # Lee "Faker" Sang-hyeok
+    "T1 Gumayusi#KR1",  # Lee "Gumayusi" Min-hyeong
+    "T1 Keria#T1KR"   # Ryu "Keria" Min-seok
 ]
 
 # Initialize GCS client
