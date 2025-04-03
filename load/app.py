@@ -7,12 +7,19 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+player_to_puuid = {
+    "어리고싶다#KR1": "hzXrhB_kOowcOct4ChX4Y2w1csXrDKz5Op6_Lw20YVJTN39e26nVBBNXekYwjQ9YNy17pW_NDWth5A",
+    "T1 Oner#T1GO": "hmFB1blGrOe9_K5FOLfHbTdaUJ-YEjhlIjFQcIXaTVGuNVyWlmtYN9oJvWwRWgD4dxc7M4zi3eEJJg",
+    "Hide on bush#KR1": "DiP-XjK39x5hWFu0YmhAsKJvRGuoHdxExF80LKs1LJbzgHxHpGGBN7Q_KnROkCDIUYAJNQOboxxySA",
+    "T1 Gumayusi#KR1": "D48co_DlSFYK9vq35gkelb0cbIltyNwDvFyp3F-NTq0thD_cl3zhjn8N3LFtf56TzjTgOBsuEtMxYw",
+    "T1 Keria#T1KR": "ntLXjzzIi4q_hExCnAdIAfivHGKpW6LwgpQqSgtMao4aejsTY07vXRGZjNlzAgNx9na5ko2RYIgBWA"
+}
+
 # Configuration
 GCS_BUCKET_NAME = "t1dashboard"
 BQ_DATASET = "riot_data"
 BQ_TABLE = "match_stats"
 PROJECT_ID = "Qvegriala"
-RIOT_API_KEY = "RGAPI-9839e078-e41b-4548-8726-188eb40ca4ae"
 
 # Initialize clients
 storage_client = storage.Client()
@@ -33,7 +40,7 @@ def transform_match_data(player_riot_id, match_data):
     for match in match_data:
         # Find the player's participant data
         participant = next(
-            p for p in match["info"]["participants"] if p["puuid"] == get_puuid(player_riot_id)
+            p for p in match["info"]["participants"] if p["puuid"] == player_to_puuid[player_riot_id]
         )
         row = {
             "player_riot_id": player_riot_id,
@@ -49,16 +56,16 @@ def transform_match_data(player_riot_id, match_data):
         rows.append(row)
     return rows
 
-def get_puuid(riot_id):
-    # This is a simplified lookup; in production, cache this or fetch from Riot API
-    game_name, tag_line = riot_id.split("#")
-    url = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
-    # headers = {"X-Riot-Token": os.environ.get("RIOT_API_KEY")}
-    headers = {"X-Riot-Token": RIOT_API_KEY}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json()["puuid"]
-    raise Exception(f"Failed to get PUUID for {riot_id}")
+# def get_puuid(riot_id):
+#     # This is a simplified lookup; in production, cache this or fetch from Riot API
+#     game_name, tag_line = riot_id.split("#")
+#     url = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
+#     # headers = {"X-Riot-Token": os.environ.get("RIOT_API_KEY")}
+#     headers = {"X-Riot-Token": RIOT_API_KEY}
+#     response = requests.get(url, headers=headers)
+#     if response.status_code == 200:
+#         return response.json()["puuid"]
+#     raise Exception(f"Failed to get PUUID for {riot_id}")
 
 @app.route("/load-to-bigquery", methods=["GET"])
 def load_to_bigquery():

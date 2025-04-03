@@ -14,7 +14,7 @@ REGION = "asia"  # Riot API region (adjust if targeting KR server)
 
 # T1's active 2025 roster with Riot IDs (gameName#tagLine)
 PLAYERS = [
-    "Doran#KR1",  # Choi "Doran" Hyeon-joon
+    "어리고싶다#KR1",  # Choi "Doran" Hyeon-joon
     "T1 Oner#T1GO",   # Mun "Oner" Hyeon-jun
     "Hide on bush#KR1",  # Lee "Faker" Sang-hyeok
     "T1 Gumayusi#KR1",  # Lee "Gumayusi" Min-hyeong
