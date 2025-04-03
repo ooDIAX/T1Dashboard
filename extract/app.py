@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from flask import Flask, jsonify
 from google.cloud import storage
 from datetime import datetime
@@ -54,7 +55,8 @@ def get_match_details(match_id):
 def upload_to_gcs(data, destination_blob_name):
     bucket = storage_client.bucket(GCS_BUCKET_NAME)
     blob = bucket.blob(destination_blob_name)
-    blob.upload_from_string(str(data), content_type="application/json")
+    # blob.upload_from_string(str(data), content_type="application/json")
+    blob.upload_from_string(json.dumps(data), content_type="application/json")
     return f"gs://{GCS_BUCKET_NAME}/{destination_blob_name}"
 
 @app.route("/fetch-stats", methods=["GET"])
