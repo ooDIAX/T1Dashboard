@@ -12,6 +12,7 @@ GCS_BUCKET_NAME = "t1dashboard"
 BQ_DATASET = "riot_data"
 BQ_TABLE = "match_stats"
 PROJECT_ID = "Qvegriala"
+RIOT_API_KEY = "RGAPI-9839e078-e41b-4548-8726-188eb40ca4ae"
 
 # Initialize clients
 storage_client = storage.Client()
@@ -52,7 +53,8 @@ def get_puuid(riot_id):
     # This is a simplified lookup; in production, cache this or fetch from Riot API
     game_name, tag_line = riot_id.split("#")
     url = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
-    headers = {"X-Riot-Token": os.environ.get("RIOT_API_KEY")}
+    # headers = {"X-Riot-Token": os.environ.get("RIOT_API_KEY")}
+    headers = {"X-Riot-Token": RIOT_API_KEY}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         return response.json()["puuid"]
