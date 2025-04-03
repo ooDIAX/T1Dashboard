@@ -7,6 +7,14 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+player_to_puuid = {
+    "어리고싶다#KR1": "hzXrhB_kOowcOct4ChX4Y2w1csXrDKz5Op6_Lw20YVJTN39e26nVBBNXekYwjQ9YNy17pW_NDWth5A",
+    "T1 Oner#T1GO": "hmFB1blGrOe9_K5FOLfHbTdaUJ-YEjhlIjFQcIXaTVGuNVyWlmtYN9oJvWwRWgD4dxc7M4zi3eEJJg",
+    "Hide on bush#KR1": "DiP-XjK39x5hWFu0YmhAsKJvRGuoHdxExF80LKs1LJbzgHxHpGGBN7Q_KnROkCDIUYAJNQOboxxySA",
+    "T1 Gumayusi#KR1": "D48co_DlSFYK9vq35gkelb0cbIltyNwDvFyp3F-NTq0thD_cl3zhjn8N3LFtf56TzjTgOBsuEtMxYw",
+    "역천괴#Ker10": "kIhU-x7lh-nL7MiokBkRnJu_k-YWFndW1rM9mHEuvUmgKeRvFiQJwmcsp_8YUbQTFMpCbHxxs2jspg"
+}
+
 # Configuration
 RIOT_API_KEY = "RGAPI-9839e078-e41b-4548-8726-188eb40ca4ae"  # Replace with your Riot API key
 GCS_BUCKET_NAME = "t1dashboard"  # Replace with your GCS bucket name
@@ -65,7 +73,8 @@ def fetch_stats():
         all_player_data = {}
         for player in PLAYERS:
             # Get PUUID using Riot ID
-            puuid = get_puuid(player)
+            # puuid = get_puuid(player)
+            puuid = player_to_puuid[player]
             # Get last 5 match IDs
             match_ids = get_last_matches(puuid)
             # Get match details
