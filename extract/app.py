@@ -32,15 +32,15 @@ PLAYERS = [
 # Initialize GCS client
 storage_client = storage.Client()
 
-def get_puuid(riot_id):
-    game_name, tag_line = riot_id.split("#")
-    url = f"https://{REGION}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
-    headers = {"X-Riot-Token": RIOT_API_KEY}
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json()["puuid"]
-    else:
-        raise Exception(f"Failed to get PUUID for {riot_id}: {response.status_code}")
+# def get_puuid(riot_id):
+#     game_name, tag_line = riot_id.split("#")
+#     url = f"https://{REGION}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
+#     headers = {"X-Riot-Token": RIOT_API_KEY}
+#     response = requests.get(url, headers=headers)
+#     if response.status_code == 200:
+#         return response.json()["puuid"]
+#     else:
+#         raise Exception(f"Failed to get PUUID for {riot_id}: {response.status_code}")
 
 def get_last_matches(puuid, count=10):
     url = f"https://{REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?count={count}"

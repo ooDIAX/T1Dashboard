@@ -69,6 +69,7 @@ def transform_match_data(player_riot_id, match_data):
 
 @app.route("/load-to-bigquery", methods=["GET"])
 def load_to_bigquery():
+    return jsonify({"message": f"vwov???"}), 200
     try:
         # Get the latest file from GCS
         latest_blob = get_latest_gcs_file(GCS_BUCKET_NAME)
