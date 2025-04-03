@@ -84,6 +84,7 @@ def load_to_bigquery():
         errors = bq_client.insert_rows_json(table_ref, rows_to_insert)
 
         if errors:
+            return jsonify({"error": str(errors)}), 500
             raise Exception(f"Errors loading data into BigQuery: {errors}")
         
         return jsonify({"message": f"Loaded {len(rows_to_insert)} rows into BigQuery"}), 200
