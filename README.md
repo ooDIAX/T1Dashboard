@@ -11,7 +11,8 @@ The system consists of two Cloud Run functions:
    - Loads the data into a data lake.  
 
 2. **Load Function**  
-   - Reads the data from the data lake.  
+   - Reads the data from the data lake.
+   - Transforms data according to BigQuery schema.
    - Loads the processed data into BigQuery.  
 
 Once the data is in BigQuery, it is visualized using **Looker Studio**.
