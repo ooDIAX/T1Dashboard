@@ -32,7 +32,7 @@ PLAYERS = [
 # Initialize GCS client
 storage_client = storage.Client()
 
-def get_last_matches(puuid, count=10):
+def get_last_matches(puuid, count=50):
     url = f"https://{REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?count={count}"
     headers = {"X-Riot-Token": RIOT_API_KEY}
     response = requests.get(url, headers=headers)
@@ -53,7 +53,6 @@ def get_match_details(match_id):
 def upload_to_gcs(data, destination_blob_name):
     bucket = storage_client.bucket(GCS_BUCKET_NAME)
     blob = bucket.blob(destination_blob_name)
-    # blob.upload_from_string(str(data), content_type="application/json")
     blob.upload_from_string(json.dumps(data), content_type="application/json")
     return f"gs://{GCS_BUCKET_NAME}/{destination_blob_name}"
 
@@ -63,10 +62,9 @@ def fetch_stats():
         all_player_data = {}
         for player in PLAYERS:
             # Get PUUID using Riot ID
-            # puuid = get_puuid(player)
             puuid = player_to_puuid[player]
-            # Get last 5 match IDs
             match_ids = get_last_matches(puuid)
+
             # Get match details
             matches = [get_match_details(match_id) for match_id in match_ids]
             all_player_data[player] = matches
