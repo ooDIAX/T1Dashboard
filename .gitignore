@@ -10,6 +10,7 @@ ENV/
 
 #test
 extract/test.py
+load/test.py
 
 # Distribution / packaging
 .Python

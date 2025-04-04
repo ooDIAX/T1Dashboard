@@ -68,15 +68,51 @@ def load_to_bigquery():
         for player_riot_id, matches in data.items():
             rows_to_insert.extend(transform_match_data(player_riot_id, matches))
 
-        # Load into BigQuery
-        table_ref = bq_client.dataset(BQ_DATASET).table(BQ_TABLE)
-        errors = bq_client.insert_rows_json(table_ref, rows_to_insert)
-
+        # Load data into a temporary table first
+        temp_table = f"{PROJECT_ID}.{BQ_DATASET}.temp_match_stats_{int(datetime.utcnow().timestamp())}"
+        table_ref = bq_client.dataset(BQ_DATASET).table(temp_table.split('.')[-1])
+        schema = [
+            bigquery.SchemaField("player_riot_id", "STRING"),
+            bigquery.SchemaField("match_id", "STRING"),
+            bigquery.SchemaField("game_timestamp", "TIMESTAMP"),
+            bigquery.SchemaField("champion", "STRING"),
+            bigquery.SchemaField("kills", "INTEGER"),
+            bigquery.SchemaField("deaths", "INTEGER"),
+            bigquery.SchemaField("assists", "INTEGER"),
+            bigquery.SchemaField("win", "BOOLEAN"),
+            bigquery.SchemaField("game_duration", "INTEGER")
+        ]
+        table = bigquery.Table(table_ref, schema=schema)
+        bq_client.create_table(table, exists_ok=True)
+        errors = bq_client.insert_rows_json(table, rows_to_insert)
         if errors:
-            return jsonify({"error": str(errors)}), 500
-            raise Exception(f"Errors loading data into BigQuery: {errors}")
-        
-        return jsonify({"message": f"Loaded {len(rows_to_insert)} rows into BigQuery"}), 200
+            raise Exception(f"Errors loading data into temp table: {errors}")
+
+        # Perform MERGE operation
+        merge_query = f"""
+        MERGE `{PROJECT_ID}.{BQ_DATASET}.{BQ_TABLE}` T
+        USING `{temp_table}` S
+        ON T.match_id = S.match_id AND T.player_riot_id = S.player_riot_id
+        WHEN MATCHED THEN
+            UPDATE SET
+                game_timestamp = S.game_timestamp,
+                champion = S.champion,
+                kills = S.kills,
+                deaths = S.deaths,
+                assists = S.assists,
+                win = S.win,
+                game_duration = S.game_duration
+        WHEN NOT MATCHED THEN
+            INSERT (player_riot_id, match_id, game_timestamp, champion, kills, deaths, assists, win, game_duration)
+            VALUES (player_riot_id, match_id, game_timestamp, champion, kills, deaths, assists, win, game_duration)
+        """
+        query_job = bq_client.query(merge_query)
+        query_job.result()  # Wait for the query to complete
+
+        # Clean up temporary table
+        bq_client.delete_table(table_ref, not_found_ok=True)
+
+        return jsonify({"message": f"Merged {len(rows_to_insert)} rows into BigQuery"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
