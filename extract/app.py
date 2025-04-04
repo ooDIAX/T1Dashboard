@@ -17,7 +17,7 @@ player_to_puuid = {
 }
 
 # Configuration
-RIOT_API_KEY = "RGAPI-814066c5-9691-4f10-b3f0-f2d99ad76983"
+RIOT_API_KEY = "RGAPI-edec9f74-1786-47a6-b8ec-453314cd0406"
 GCS_BUCKET_NAME = "t1dashboard"
 REGION = "asia"
 
