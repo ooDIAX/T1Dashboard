@@ -56,17 +56,6 @@ def transform_match_data(player_riot_id, match_data):
         rows.append(row)
     return rows
 
-# def get_puuid(riot_id):
-#     # This is a simplified lookup; in production, cache this or fetch from Riot API
-#     game_name, tag_line = riot_id.split("#")
-#     url = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
-#     # headers = {"X-Riot-Token": os.environ.get("RIOT_API_KEY")}
-#     headers = {"X-Riot-Token": RIOT_API_KEY}
-#     response = requests.get(url, headers=headers)
-#     if response.status_code == 200:
-#         return response.json()["puuid"]
-#     raise Exception(f"Failed to get PUUID for {riot_id}")
-
 @app.route("/load-to-bigquery", methods=["GET"])
 def load_to_bigquery():
     try:
