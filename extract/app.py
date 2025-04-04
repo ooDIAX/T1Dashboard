@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import time
 from flask import Flask, jsonify
 from google.cloud import storage
 from datetime import datetime
@@ -32,7 +33,7 @@ PLAYERS = [
 # Initialize GCS client
 storage_client = storage.Client()
 
-def get_last_matches(puuid, count=50):
+def get_last_matches(puuid, count=10):
     url = f"https://{REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?count={count}"
     headers = {"X-Riot-Token": RIOT_API_KEY}
     response = requests.get(url, headers=headers)
