@@ -19,7 +19,7 @@ player_to_puuid = {
 GCS_BUCKET_NAME = "t1dashboard"
 BQ_DATASET = "riot_data"
 BQ_TABLE = "match_stats"
-PROJECT_ID = "Qvegriala"
+PROJECT_ID = "qvegriala"
 
 # Initialize clients
 storage_client = storage.Client()
